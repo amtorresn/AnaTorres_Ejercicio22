@@ -3,13 +3,13 @@
 #include <cstdlib>
 #include <ctime>
 #include <cmath>
-#import <random>
+#include <random>
 
 using std::cout;
 using std::endl;
 
-float funcion(x);
-void MCMC(N);
+float funcion(float x);
+void MCMC(int N);
 
 
 int main(){
@@ -19,21 +19,28 @@ int main(){
 
 }
 
-float funcion(x){
-    return -x*x/2;
+float funcion(float x){
+    return exp(-x*x/2);
 }
 
-void MCMC(N){
+void MCMC(int N){
     
     srand48(time(0));
     float random1;
     float propuesta;
-    random1 = drand48()*2 - 1;
     int i;
+    float r;
+    float alpha;
+    float x;
+    random1 = drand48()*2 - 1;
     for (i=0; i < N; i++){
         propuesta = random1 + drand48()*2 - 1;
         r = funcion(propuesta)/funcion(random1);
-        alpha = np.random.random();
+        alpha = drand48();
+        
+        if(r>1){
+            r = 1;
+        }
         
         if(alpha<r){
             x = propuesta;
@@ -42,6 +49,7 @@ void MCMC(N){
             x = random1;
         }
         cout << x << endl;
+        random1 = x;
     }
     
 }
